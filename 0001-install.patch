@@ -1,0 +1,63 @@
+From 981d2fc14c254d96764a9ca4c7b29009c3ac9f1a Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Tue, 24 Sep 2024 20:27:31 +0800
+Subject: [PATCH] install
+
+---
+ CMakeLists.txt      |  8 ++++++++
+ coinbrowser.desktop | 11 +++++++++++
+ mainwindow.cpp      |  2 +-
+ 3 files changed, 20 insertions(+), 1 deletion(-)
+ create mode 100644 coinbrowser.desktop
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 96e9c99..85f3309 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -74,3 +74,11 @@ target_link_libraries(coinbrowser PRIVATE Qt${QT_VERSION_MAJOR}::Sql)
+ target_link_libraries(coinbrowser PRIVATE Qt${QT_VERSION_MAJOR}::Network)
+ #target_link_libraries(coinbrowser OpenSSL::SSL)
+ target_link_libraries(coinbrowser PRIVATE OpenSSL::applink)
++install(TARGETS ${PROJECT_NAME}
++             DESTINATION bin)
++
++install(FILES icons/coffeecup.png
++        DESTINATION share/icons)
++
++install(FILES coinbrowser.desktop
++            DESTINATION share/applications)
+\ No newline at end of file
+diff --git a/coinbrowser.desktop b/coinbrowser.desktop
+new file mode 100644
+index 0000000..1831a68
+--- /dev/null
++++ b/coinbrowser.desktop
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Categories=Accessibility;Qt;Utility;
++Exec=coinbrowser
++Name=coinbrowser
++Name[zh_CN]=coinbrowser
++Icon=coffeecup
++StartupNotify=false
++Terminal=false
++Type=Application
++GenericName=coinbrowser
++Version=1.0
+\ No newline at end of file
+diff --git a/mainwindow.cpp b/mainwindow.cpp
+index f98742a..43deff5 100644
+--- a/mainwindow.cpp
++++ b/mainwindow.cpp
+@@ -116,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent)
+     }
+     QStringList cryptolist = loadsettings("cryptolist").toStringList();
+     if (cryptolist.isEmpty()) {
+-        cryptolist = {"BTC","ETH","USDT"};
++        cryptolist = QStringList() << "BTC" << "ETH" << "USDT";
+         savesettings("cryptolist",cryptolist);
+     }
+     ui->filter->setChecked(true);
+-- 
+2.43.4
+
