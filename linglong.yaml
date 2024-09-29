@@ -1,0 +1,30 @@
+version: "1"
+
+package:
+  id: io.github.CoinBrowser
+  name: CoinBrowser
+  version: 0.1.5.1
+  kind: app
+  description: |
+    Coinbrowser is a pair selection tool for Freqtrade and a simple crypto trading-simulator
+
+command:
+  - /opt/apps/io.github.CoinBrowser/files/bin/coinbrowser
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/QTinman/CoinBrowser.git
+    version: master
+    commit: 4084dc49fbc0e14f3c9e609a70853fb5214d9545
+
+build: |
+  cd /project/linglong/sources/CoinBrowser.git
+  git apply ../../../0001-install.patch
+  mkdir -p build
+  cd build
+  cmake .. \
+        -DCMAKE_INSTALL_PREFIX=${PREFIX}
+  cmake --build . --target install -j$(nproc --all)
